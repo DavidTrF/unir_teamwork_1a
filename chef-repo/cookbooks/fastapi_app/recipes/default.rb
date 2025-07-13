@@ -73,7 +73,7 @@ file '/etc/systemd/system/fastapi.service' do
     [Service]
     User=ubuntu-unir
     WorkingDirectory=/home/ubuntu-unir/fastapi_app
-    ExecStart=/home/ubuntu-unir/fastapi_app/.venv/bin/python -m fastapi run main.py --host 0.0.0.0 --port 80
+    ExecStart=/home/ubuntu-unir/fastapi_app/.venv/bin/python -m fastapi run main.py --host 0.0.0.0 --port 8080
     Restart=always
 
     [Install]

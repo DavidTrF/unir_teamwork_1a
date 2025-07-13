@@ -1,4 +1,3 @@
 # fastapi_app
 
-TODO: Enter the cookbook description here.
-
+El cookbook fastapi_app fue creado con el objetivo de automatizar el despliegue de una aplicación web construida con FastAPI sobre un servidor Ubuntu, utilizando Chef Workstation. La receta instala las herramientas necesarias, configura un entorno virtual de Python, instala las dependencias del proyecto, genera los archivos principales de la aplicación y crea un servicio systemd para gestionar la aplicación de manera eficiente.
