@@ -1,0 +1,30 @@
+from fastapi import FastAPI
+
+app = FastAPI(
+    title="Demo FastAPI for Chef Workstation",
+    description="API de demostración para la tarea del grupo 1_A",
+    version="1.0.0"
+)
+
+
+@app.get("/")
+def read_root():
+    return {
+        "message": "Hello from FastAPI"
+    }
+
+
+@app.get("/healthcheck")
+def healthcheck():
+    return {
+        "status": "ok"
+    }
+
+
+@app.get("/about")
+def about():
+    return {
+        "project": "Demo FastAPI for Chef Workstation",
+        "group": "1_A",
+        "version": "1.0.0",
+    }
