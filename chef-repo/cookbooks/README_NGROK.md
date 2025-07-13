@@ -114,12 +114,26 @@ chef exec inspec exec test/integration/default
 ---
 
 ## 📚 Autor
-**Institución:** UNIR   
+**Institución:** UNIR  
+
+
 **Empleo del Chef Workstation (grupal)**
+
+
 **Materia:** Herramientas de Automatización de Despliegues
-**Ingeniera:** Kristell Daniella Franco Sanchez                      
+
+
+**Ingeniera:** Kristell Daniella Franco Sanchez    
+
+
 **Nombre:** Athena Yaressy Nieto Rivera
+
+
 **Sistema:** macOS M4
+
+
 **Grupo:** 1040
+
+
 **Equipo: 1-A**
 
