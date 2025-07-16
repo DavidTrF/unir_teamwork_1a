@@ -2,49 +2,25 @@
 # Cookbook:: jenkins
 # Recipe:: default
 #
-# Copyright:: 2025, The Authors, All Rights Reserved.
-
-#iniciar servicio Docker
-#deprecate
-  #docker_service 'default' do
-  #  action [:create, :start]
-  #end
-
-#Descargar imagen oficial de Jenkins
-#deprecated
- #docker_image 'jenkins/jenkins' do
- # tag 'lts'
- # action :pull
- #end
-
-#crear contenedor Jenkins
-#deprecated
- #docker_container 'jenkins' do
-  #repo 'jenkins/jenkins'
-  #tag 'lts'
-  #port ['8080:8080', '50000:50000']
-  #restart_policy 'always'
-  #volumes ['/var/jenkins_home']
- #end
+# Copyright:: 2025, The Authors, All Rights Reserved
 
 #variables reutilizables
-admin_user      = 'admin'
-admin_password  = 'MySecret123'
 jenkins_port    = '8080'
 
 
 #detectar sistema operativo y mostrarlo
 ruby_block 'print_os' do
  block do
+    puts "\n viendo sistema operativo\n"
     platform = node['platform']
-    puts "\n sistema operativo detectado: #{platform}"
+    puts "\n sistema operativo detectado: #{platform}\n"
   end
 end
 
 #instalar docker si no esta instalado( Linux)
 if node['platform_family'] == 'debian' || node['platform_family'] == 'rhel'
-execute 'install_docker' do
-  
+execute 'install_docker' do 
+  puts "\n instalando docker \n" 
   command <<-EOH
     curl -fsSL  https://get.docker.com | sh
   EOH
@@ -55,20 +31,17 @@ end
 #detectar si jenkins ya se esta ejecutando y detener
 execute 'stop_and_remove_jenkins' do
   command <<-EOH
-    docker stop jenkins || true
-    docker rm jenkins || true
+    sudo docker stop jenkins || true
+    sudo docker rm jenkins || true
   EOH
-  only_if 'docker ps -a --format "{{.names}}" | grep -w jenkins'
+  only_if "docker inspect jenkins >/dev/null 2>&1"
 end
 
 #Ejecutar jenkins en Docker
 execute 'run_jenkins_container' do
   command <<-EOH
-    echo "ejecutando docker-jenkins"
+    puts "ejecutando docker-jenkins"
     docker run -d --name jenkins \
-    -e JAVA_OPT="-Djenkins.install.runSetupWizard=false" \
-    -e JENKINS_ADMIN_ID=#{admin_user} \
-    -e JENKINS_ADMIN_PASSWORD=#{admin_password} \
     -p #{jenkins_port}:8080 \
     jenkins/jenkins:lts
   EOH
@@ -87,18 +60,8 @@ end
 
 ruby_block 'print_initial_admin_password' do
   block do 
-    password = 'docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword'.strip
+    password = %x(sudo docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword).strip
     puts "\n Jenkins initial admin password: #{password}\n"
   end
 end
 
-#mostrar credenciales  configuradas
-ruby_block 'print_admin_credentials' do
- block do
-   puts "\n Jenkins configurado con:"
-   puts "   Usuario: #{admin_user}"
-   puts "   Password: #{admin_password}"
-   puts "\n Accede a: http://localhost:#{jenkins_port}\n"
- end
-end
-   
