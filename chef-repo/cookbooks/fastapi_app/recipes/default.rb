@@ -8,6 +8,21 @@ execute 'apt_update' do
   command 'apt update && apt upgrade -y'
 end
 
+group "ubuntu-unir" do
+  gid 9999
+end
+
+
+user 'ubuntu-unir' do
+  comment 'user for FastAPI application'
+  uid '9999'
+  gid '9999'
+  manage_home true
+  home '/home/ubuntu-unir'
+  shell '/bin/bash'
+  password 'unir'
+end
+
 # Instalación de herramientas necesarias
 package %w(python3-venv curl) do
   action :install
